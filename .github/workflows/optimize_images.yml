@@ -1,0 +1,32 @@
+name: Optimize Images on Push/PR
+
+on:
+  # mainブランチへのプッシュ時に実行 (ブランチ名はあなたのリポジトリに合わせて変更してください)
+  push:
+    branches:
+      - main 
+  # プルリクエスト作成/更新時に実行
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  optimize-images:
+    name: Image Optimization
+    runs-on: ubuntu-latest
+    steps:
+      # 1. リポジトリのコードをチェックアウト
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 
+
+      # 2. 画像最適化アクションを実行
+      - name: Compress Images
+        uses: calibreapp/image-actions@v0.12.0
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          # JPEGの品質を70に設定。15分の1を目指すため、高めの圧縮率です。
+          jpegQuality: '70'
+          pngQuality: '70' 
+          # 最適化コミットが別のアクションをトリガーしないようにスキップ
+          commitMessage: 'docs: Optimize images [skip ci]'
