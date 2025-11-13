@@ -22,7 +22,7 @@ jobs:
 
       # 2. 画像最適化アクションを実行
       - name: Compress Images
-        uses: calibreapp/image-actions@v0
+        uses: calibreapp/image-actions@main
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           # JPEGの品質を70に設定。15分の1を目指すため、高めの圧縮率です。
